@@ -14,7 +14,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Cloudflare Pages
+    name: Deploy FreeTV to Cloudflare Workers
 
     steps:
       - name: Checkout source code
@@ -36,8 +36,9 @@ jobs:
         run: |
           echo "BUILD_TARGET=cloudflare" >> $GITHUB_ENV
           echo "NODE_ENV=production" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_STORAGE_TYPE=${{ secrets.NEXT_PUBLIC_STORAGE_TYPE }}" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_SITE_NAME=${{ secrets.NEXT_PUBLIC_SITE_NAME }}" >> $GITHUB_ENV
+          # FreeTV uses Cloudflare D1 so no external database service is needed.
+          echo "NEXT_PUBLIC_STORAGE_TYPE=d1" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SITE_NAME=自由TV" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_SEARCH_MAX_PAGE=${{ secrets.NEXT_PUBLIC_SEARCH_MAX_PAGE }}" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_DOUBAN_PROXY_TYPE=${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY_TYPE }}" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_DOUBAN_PROXY=${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY }}" >> $GITHUB_ENV
@@ -75,22 +76,15 @@ jobs:
 
       - name: Configure D1 Database in wrangler.toml
         run: |
-          STORAGE_TYPE="${{ secrets.NEXT_PUBLIC_STORAGE_TYPE }}"
+          D1_DATABASE_ID="${{ vars.D1_DATABASE_ID || secrets.D1_DATABASE_ID }}"
 
-          if [ "$STORAGE_TYPE" != "d1" ]; then
-            echo "Storage type is not d1 (current: $STORAGE_TYPE), removing D1 database configuration"
-            # Remove the entire [[d1_databases]] section including the comment
-            sed -i '/^# D1 数据库绑定$/,/^database_id = .*$/d' wrangler.toml
-            # Also remove any remaining [[d1_databases]] block
-            sed -i '/^\[\[d1_databases\]\]$/,/^$/{ /^\[\[d1_databases\]\]$/d; /^binding = /d; /^database_name = /d; /^database_id = /d; }' wrangler.toml
-            echo "D1 configuration removed from wrangler.toml"
-          elif [ -n "${{ secrets.D1_DATABASE_ID }}" ]; then
-            sed -i 's/REPLACE_WITH_YOUR_D1_DATABASE_ID/${{ secrets.D1_DATABASE_ID }}/g' wrangler.toml
-            echo "D1 Database ID replaced successfully"
-          else
-            echo "⚠️ Storage type is d1 but D1_DATABASE_ID secret not set"
+          if [ -z "$D1_DATABASE_ID" ]; then
+            echo "D1_DATABASE_ID is not configured"
             exit 1
           fi
+
+          sed -i "s/REPLACE_WITH_YOUR_D1_DATABASE_ID/$D1_DATABASE_ID/g" wrangler.toml
+          echo "D1 Database ID replaced successfully"
 
       - name: Update wrangler.toml with environment variables
         env:
@@ -108,8 +102,8 @@ jobs:
           }
 
           # Append all environment variables to wrangler.toml
-          append_var "NEXT_PUBLIC_STORAGE_TYPE" "${{ secrets.NEXT_PUBLIC_STORAGE_TYPE }}"
-          append_var "NEXT_PUBLIC_SITE_NAME" "${{ secrets.NEXT_PUBLIC_SITE_NAME }}"
+          append_var "NEXT_PUBLIC_STORAGE_TYPE" "d1"
+          append_var "NEXT_PUBLIC_SITE_NAME" "自由TV"
           append_var "NEXT_PUBLIC_SEARCH_MAX_PAGE" "${{ secrets.NEXT_PUBLIC_SEARCH_MAX_PAGE }}"
           append_var "NEXT_PUBLIC_DOUBAN_PROXY_TYPE" "${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY_TYPE }}"
           append_var "NEXT_PUBLIC_DOUBAN_PROXY" "${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY }}"
@@ -189,16 +183,11 @@ jobs:
 
       - name: Run D1 Database Migrations
         run: |
-          STORAGE_TYPE="${{ secrets.NEXT_PUBLIC_STORAGE_TYPE }}"
+          D1_DATABASE_ID="${{ vars.D1_DATABASE_ID || secrets.D1_DATABASE_ID }}"
 
-          if [ "$STORAGE_TYPE" != "d1" ]; then
-            echo "Storage type is not d1 (current: $STORAGE_TYPE), skipping D1 migrations"
-            exit 0
-          fi
-
-          if [ -z "${{ secrets.D1_DATABASE_ID }}" ]; then
-            echo "D1_DATABASE_ID not set, skipping migrations"
-            exit 0
+          if [ -z "$D1_DATABASE_ID" ]; then
+            echo "D1_DATABASE_ID is not configured"
+            exit 1
           fi
 
           echo "Running D1 database migrations..."
@@ -206,7 +195,7 @@ jobs:
           for migration_file in ./migrations/*.sql; do
             if [ -f "$migration_file" ]; then
               echo "Executing migration: $(basename $migration_file)"
-              wrangler d1 execute moontvplus --remote --file="$migration_file" || echo "⚠️ Migration may have been skipped (already applied)"
+              wrangler d1 execute free-tv --remote --file="$migration_file" || echo "⚠️ Migration may have been skipped (already applied)"
             fi
           done
 
