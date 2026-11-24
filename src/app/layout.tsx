@@ -443,7 +443,7 @@ export default async function RootLayout({
       >
         <ThemeProvider
           attribute='class'
-          defaultTheme='system'
+          defaultTheme='dark'
           enableSystem
           disableTransitionOnChange
         >
@@ -460,6 +460,9 @@ export default async function RootLayout({
               <DownloadProvider>
                 <StartupCacheCleanup />
                 {children}
+                <footer className='freedom-credit' aria-label='开发者署名'>
+                  由 V哥（廾匸、我走路帶風）二次开发
+                </footer>
                 <GlobalErrorIndicator />
                 <ChatFloatingWindow />
                 <DownloadBubble />

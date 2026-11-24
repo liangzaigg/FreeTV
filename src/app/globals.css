@@ -355,6 +355,14 @@ div[data-media-provider] video {
 /* 骨架屏微光动画与配色变量 - 原为 ImagePlaceholder 的内联 <style>，
    提升为全局单例：此前每个实例都会重复输出一份 keyframes 与 :root 变量。
    改为只跟随 .dark 类，不再跟随系统偏好，避免 hydration 前闪错配色。 */
+.freedom-credit {
+  padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+  color: rgba(167, 181, 209, 0.72);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
 @keyframes shine {
   0% {
     background-position: -200% 0;

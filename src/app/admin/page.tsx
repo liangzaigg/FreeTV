@@ -10411,8 +10411,8 @@ const ThemeConfigComponent = ({
   const { alertModal, showAlert, hideAlert } = useAlertModal();
   const { isLoading, withLoading } = useLoadingState();
   const [themeSettings, setThemeSettings] = useState({
-    enableBuiltInTheme: false,
-    builtInTheme: 'default',
+    enableBuiltInTheme: true,
+    builtInTheme: 'cyberpunk',
     customCSS: '',
     enableCache: true,
     cacheMinutes: 1440, // 默认1天（1440分钟）
@@ -10435,8 +10435,8 @@ const ThemeConfigComponent = ({
   useEffect(() => {
     if (config?.ThemeConfig) {
       setThemeSettings({
-        enableBuiltInTheme: config.ThemeConfig.enableBuiltInTheme || false,
-        builtInTheme: config.ThemeConfig.builtInTheme || 'default',
+        enableBuiltInTheme: config.ThemeConfig.enableBuiltInTheme ?? true,
+        builtInTheme: config.ThemeConfig.builtInTheme || 'cyberpunk',
         customCSS: config.ThemeConfig.customCSS || '',
         enableCache: config.ThemeConfig.enableCache !== false,
         cacheMinutes: config.ThemeConfig.cacheMinutes || 1440,
@@ -10610,6 +10610,11 @@ const ThemeConfigComponent = ({
       value: 'cyan_ocean',
       label: '青色海洋',
       color: '#06b6d4',
+    },
+    {
+      value: 'cyberpunk',
+      label: '赛博朋克',
+      color: '#22d3ee',
     },
   ];
 

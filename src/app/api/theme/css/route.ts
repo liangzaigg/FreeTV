@@ -14,11 +14,11 @@ export async function GET(request: NextRequest) {
     const adminConfig = await getConfig();
     const themeConfig = adminConfig.ThemeConfig;
 
-    // 如果没有配置主题，返回空CSS
+    // 首次部署默认使用赛博朋克主题；管理员保存自定义主题后按保存配置展示。
     if (!themeConfig) {
-      return new NextResponse('', {
+      return new NextResponse(getThemeCSS('cyberpunk'), {
         headers: {
-          'Content-Type': 'text/css',
+          'Content-Type': 'text/css; charset=utf-8',
           'Cache-Control': 'no-store',
         },
       });

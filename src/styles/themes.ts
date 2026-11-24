@@ -373,6 +373,66 @@ export const builtInThemes = {
 }
 `,
   },
+  cyberpunk: {
+    name: '赛博朋克',
+    description: '霓虹青紫与深色电影质感',
+    color: '#22d3ee',
+    css: `
+:root:not(.dark) {
+  --theme-primary: #0891b2;
+  --theme-primary-hover: #7c3aed;
+  --theme-bg: #080b16;
+  --theme-bg-secondary: #111629;
+  --theme-text: #ecf7ff;
+  --theme-text-secondary: #a7b5d1;
+  --theme-border: rgba(34, 211, 238, 0.2);
+}
+.dark {
+  --theme-primary: #22d3ee;
+  --theme-primary-hover: #c084fc;
+  --theme-bg: #080b16;
+  --theme-bg-secondary: #111629;
+  --theme-text: #ecf7ff;
+  --theme-text-secondary: #a7b5d1;
+  --theme-border: rgba(34, 211, 238, 0.2);
+}
+html, body {
+  background-color: #080b16 !important;
+  color: #ecf7ff !important;
+}
+body {
+  background-image:
+    radial-gradient(ellipse at 78% 0%, rgba(112, 46, 190, 0.16), transparent 38%),
+    radial-gradient(ellipse at 8% 18%, rgba(0, 205, 230, 0.09), transparent 32%),
+    linear-gradient(180deg, #080b16 0%, #0b1020 52%, #080b16 100%) !important;
+  background-attachment: fixed !important;
+}
+[class*="bg-white"]:not(.dark *), [class*="bg-gray-50"]:not(.dark *) {
+  background: rgba(17, 22, 41, 0.94) !important;
+  color: #ecf7ff !important;
+}
+.dark [class*="bg-gray-800"], .dark [class*="bg-gray-900"] {
+  background: rgba(15, 20, 38, 0.9) !important;
+  color: #ecf7ff !important;
+  backdrop-filter: blur(16px);
+}
+[class*="border-gray"] { border-color: rgba(34, 211, 238, 0.16) !important; }
+[class*="text-gray-600"], [class*="text-gray-700"], [class*="text-gray-800"],
+.dark [class*="text-gray-"] { color: #a7b5d1 !important; }
+.video-card-hover { transition: transform .28s ease, filter .28s ease; }
+.video-card-hover:hover {
+  filter: drop-shadow(0 0 18px rgba(34, 211, 238, .22));
+}
+#nprogress .bar {
+  background: linear-gradient(90deg, #22d3ee, #a855f7) !important;
+  box-shadow: 0 0 12px rgba(34, 211, 238, .75) !important;
+}
+::selection { background: rgba(34, 211, 238, .32); color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .video-card-hover { transition: none; }
+}
+`,
+  },
 };
 
 export type ThemeName = keyof typeof builtInThemes;
