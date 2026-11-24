@@ -4,7 +4,7 @@
   <img src="public/logo.png" alt="FreeTV Logo" width="120">
 </div>
 
-> 🎬 **FreeTV** 是基于 [MoonTVPlus](https://github.com/mtvpls/MoonTVPlus) 二次开发的影视聚合播放器。默认使用赛博朋克主题，网站显示名称为「FreeTV」，页脚显示「由 V哥（廾匸、我走路帶風）二次开发」。
+> 🎬 **FreeTV** 是基于 [MoonTVPlus](https://github.com/mtvpls/MoonTVPlus) 二次开发的影视聚合播放器。网站显示名称为「FreeTV」。
 
 <div align="center">
 
