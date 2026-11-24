@@ -1,10 +1,10 @@
-# MoonTVPlus
+# FreeTV
 
 <div align="center">
-  <img src="public/logo.png" alt="MoonTVPlus Logo" width="120">
+  <img src="public/logo.png" alt="FreeTV Logo" width="120">
 </div>
 
-> 🎬 **MoonTVPlus** 是基于 [MoonTV v100](https://github.com/MoonTechLab/LunaTV) 二次开发的增强版影视聚合播放器。它在原版基础上新增了外部播放器支持、视频超分、弹幕系统、评论抓取等实用功能，提供更强大的观影体验。
+> 🎬 **FreeTV** 是基于 [MoonTVPlus](https://github.com/mtvpls/MoonTVPlus) 二次开发的影视聚合播放器。默认使用赛博朋克主题，网站显示名称为「FreeTV」，页脚显示「由 V哥（廾匸、我走路帶風）二次开发」。
 
 <div align="center">
 
@@ -27,6 +27,7 @@
 - 📝 **豆瓣评论抓取**：自动抓取并展示豆瓣电影短评，支持分页加载
 - 🧩 **视频源脚本**：支持通过脚本自定义视频源、搜索、详情与播放解析逻辑（实验性）
 - 🪒**自定义去广告**：你可以自定义你的去广告代码，实现更强力的去广告功能
+- 🎨 **FreeTV 风格**：默认启用赛博朋克影视界面，并显示 FreeTV 二次开发署名
 - 🚀 **更快更顺滑**：相较原版项目整体速度更快，交互体验更好
 - 🧲 **磁力搜索**：聚合 Mikan、Nyaa、ACG.RIP、动漫花园等站点搜索资源，可对种子做健康检查，并推送至 OpenList 离线下载。
 - 📺 **WebTV**：专为电视大屏设计的操作界面，电视上扫码即可登录，手机浏览器还能化身虚拟遥控器。
@@ -92,11 +93,11 @@
 
 ## 部署
 
-本项目**支持 Docker、Vercel、Netlify、Cloudflare Workers 和 EdgeOne Pages 平台** 部署。
+本项目保留 Docker、Vercel、Netlify、Cloudflare Workers 和 EdgeOne Pages 等部署方式。**FreeTV 推荐使用下方 Cloudflare Workers + D1 教程**，这是当前仓库配置好的部署流程。
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mtvpls/MoonTVPlus)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/liangzaigg/FreeTV)
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/mtvpls/MoonTVPlus)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/liangzaigg/FreeTV)
 
 **一键部署到 Zeabur**
 
@@ -104,111 +105,77 @@
 
 **一键部署到 Render**
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/mtvpls/MoonTVPlus)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/liangzaigg/FreeTV)
 
 
 
-### Cloudflare Workers 部署（通过 GitHub Actions）
+### Cloudflare Workers + D1 部署（FreeTV 推荐）
 
-Cloudflare Workers 提供免费的边缘计算服务，通过 GitHub Actions 可以实现自动化部署。
+本仓库的 GitHub Actions 已配置为将 **FreeTV** 部署到 Cloudflare Workers，并使用 Cloudflare D1 保存账号、收藏、播放记录和站点设置。不需要另行注册 Upstash 或 Redis。Worker 名称和 D1 数据库名称均为 `free-tv`。
 
-#### 前置要求
+#### 一、准备 D1 数据库
 
-1. 一个 Cloudflare 账号
-2. Fork 本项目到你的 GitHub 账号
-3. 准备一个 Upstash Redis 实例（推荐）
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)，选择你的 Cloudflare 帐户。
+2. 进入 **Workers & Pages → D1 SQL Database**，点击 **Create database**。
+3. 数据库名称填写 **`free-tv`**，创建后打开数据库详情页，复制 **Database ID**。
 
-#### 配置步骤
+#### 二、准备 Cloudflare API Token 和 Account ID
 
-**1. 获取 Cloudflare API Token 和 Account ID**
+1. 在 Cloudflare 打开 **My Profile → API Tokens → Create Token**。
+2. 可选择 **Edit Cloudflare Workers** 模板；确认 Account 权限包含 **Workers Scripts: Edit** 和 **D1: Edit**，并限定在部署用的 Cloudflare 帐户。
+3. 创建后复制 Token。Token 只显示一次，请勿提交到代码或公开分享。
+4. 在 **Workers & Pages → Account Details** 复制 **Account ID**。
 
-- 访问 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-- 点击右上角头像 > My Profile > API Tokens
-- 点击 "Create Token"，选择 "Edit Cloudflare Workers" 模板
-- 或使用自定义 Token，需要以下权限：
-  - Account - Cloudflare Workers Scripts - Edit
-  - Account - D1 - Edit（仅在使用 D1 数据库时需要）
-- 创建后复制生成的 API Token
-- 在 Dashboard 首页右侧可以看到你的 Account ID
+#### 三、在 GitHub 保存部署設定
 
-**2. 配置 GitHub Secrets**
+打开你的 GitHub FreeTV 仓库（例如 `liangzaigg/FreeTV`），进入 **Settings → Secrets and variables → Actions**。
 
-进入你 Fork 的仓库，点击 Settings > Secrets and variables > Actions > New repository secret，添加以下必需的 Secrets：
+在 **Secrets** 分页逐项点击 **New repository secret**，添加：
 
-**必需配置：**
+| Name | Value |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | 上一步创建的 Cloudflare API Token |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Account ID |
+| `USERNAME` | FreeTV 管理员登录账号 |
+| `PASSWORD` | FreeTV 管理员登录密码 |
 
-| Secret 名称                | 说明                  | 示例值                   |
-| -------------------------- | --------------------- | ------------------------ |
-| `CLOUDFLARE_API_TOKEN`     | Cloudflare API Token  | `your_api_token_here`    |
-| `CLOUDFLARE_ACCOUNT_ID`    | Cloudflare Account ID | `abc123def456`           |
-| `USERNAME`                 | 站长账号              | `admin`                  |
-| `PASSWORD`                 | 站长密码              | `your_secure_password`   |
-| `NEXT_PUBLIC_STORAGE_TYPE` | 存储类型              | `upstash`                |
-| `UPSTASH_URL`              | Upstash Redis URL     | `https://xxx.upstash.io` |
-| `UPSTASH_TOKEN`            | Upstash Redis Token   | `your_upstash_token`     |
+再切换到 **Variables** 分页，点击 **New repository variable**：
 
-**3. 触发部署**
+| Name | Value |
+| --- | --- |
+| `D1_DATABASE_ID` | 第一步复制的 D1 Database ID |
 
-配置完成后，有两种方式触发部署：
+`USERNAME` 和 `PASSWORD` 是登录网站管理后台的凭据，不是 GitHub 登录密码。
 
-**方式一：手动触发**
+#### 四、运行部署
 
-- 进入仓库的 Actions 页面
-- 选择 "Deploy to Cloudflare" workflow
-- 点击 "Run workflow" 按钮
-- 选择分支（通常是 main 或 dev）
-- 点击 "Run workflow" 开始部署
+1. 打开仓库的 **Actions** 页面，左侧选择 **Deploy to Cloudflare**。
+2. 点击 **Run workflow**，分支选择 `main`，再点绿色的 **Run workflow**。
+3. 打开新生成的运行记录。所有步骤显示绿色勾号后，部署完成。
+4. 在 Cloudflare 的 **Workers & Pages** 中打开 **free-tv**，使用 Cloudflare 提供的 `workers.dev` 地址访问。
 
-**方式二：自动触发（可选）**
+工作流程目前由 **Run workflow** 手动触发；推送代码不会自动部署。首次运行会执行 D1 数据库迁移、建置并发布 Worker。
 
-如果想要在推送代码时自动部署，可以修改 `.github/workflows/cloudflare-deploy.yml` 文件：
+#### 五、绑定自己的域名（可选）
 
-```yaml
-on:
-  push:
-    branches:
-      - main  # 或你的主分支名称
-  workflow_dispatch:
-```
+确认域名已加入同一 Cloudflare 帐户且 Zone 状态为 Active 后：
 
-**4. 查看部署状态**
+1. 打开 **Workers & Pages → free-tv**。
+2. 进入 **Settings → Domains & Routes → Add → Custom Domain**。
+3. 输入完整主机名，例如 `tv.example.com`，点击添加。Cloudflare 会为该 Worker 建立 DNS 记录并配置证书。
+4. 若要让应用使用正式域名作为站点地址，可在 GitHub Actions Secrets 添加 `SITE_BASE`，值填完整 HTTPS 地址（例如 `https://tv.example.com`），再手动运行一次部署。
 
-- 在 Actions 页面可以看到部署进度
-- 部署成功后，访问 `https://your-project-name.your-account.workers.dev`
-- 也可以在 Cloudflare Dashboard 的 Workers & Pages 中查看部署的应用
+#### 六、首次登录和添加视频源
 
-**5. 绑定自定义域名（可选）**
+1. 用部署地址打开网站，在网址后加 `/admin`，例如 `https://tv.example.com/admin`。
+2. 使用 GitHub Secrets 中设置的 `USERNAME` 和 `PASSWORD` 登录。
+3. 本项目不内置影视或直播源。添加影片来源请进入 **观影源配置 → 视频源配置 → 添加视频源**，填入来源服务提供的 Apple CMS V10 JSON VOD API 地址；API 地址不要带 `?ac=list` 等查询参数，详情地址可留空。
+4. 保存后可使用 **有效性检测**，再回首页搜索测试。电视直播源请到 **电视直播源配置**单独管理。
+5. TVBox 配置不属于 CMS VOD API。使用 **TVBox 桥接**还需另行部署 Docker 桥接服务，并填写公网上可访问的桥接地址及对应 Token；Cloudflare Workers 不运行该 Docker 服务。
 
-- 在 Cloudflare Dashboard 中进入你的 Worker
-- 点击 Settings > Triggers > Custom Domains
-- 添加你的自定义域名
+请仅添加你有权使用的来源。TMDB API Key 用于影片信息和推荐，不会提供视频播放源。
 
-**6. 使用 D1 数据库（可选）**
-
-如果想使用 Cloudflare D1 数据库代替 Upstash Redis，需要进行以下配置：
-
-1. 在 Cloudflare Dashboard 中创建一个 D1 数据库
-2. 复制数据库 ID
-3. 在 GitHub Secrets 中配置：
-   - 将 `NEXT_PUBLIC_STORAGE_TYPE` 设置为 `d1`
-   - 添加 `D1_DATABASE_ID` 并填入你的数据库 ID
-   - 无需配置 `UPSTASH_URL` 和 `UPSTASH_TOKEN`
-
-**7. 自定义 Wrangler 变量（可选）**
-
-可通过 `VARS`（Repository secret 或 variable）把自定义变量写入 `wrangler.toml` 的 `[vars]`，每行一个 `KEY=VALUE`：
-
-```
-ENABLE_TVBOX_SUBSCRIBE=true
-FOO=bar
-```
-
-部署后会追加到 `[vars]`：
-
-```toml
-ENABLE_TVBOX_SUBSCRIBE = "true"
-FOO = "bar"
-```
+更详细的同一套步骤也可查看 [Cloudflare D1 部署说明](CLOUDFLARE_D1_DEPLOY.md)。
 
 ---
 
@@ -597,7 +564,7 @@ NEXT_PUBLIC_VOICE_CHAT_STRATEGY 选项解释：
 
 1. 按照 [watch-room-server](https://github.com/tgs9915/watch-room-server) 的文档部署外部服务器
 
-2. 在 MoonTVPlus 中设置以下环境变量：
+2. 在 FreeTV 中设置以下环境变量：
 
    ```env
    WATCH_ROOM_ENABLED=true
