@@ -486,7 +486,7 @@ export default function BannerCarousel({
       >
         <Image
           src='/logo.png'
-          alt='MoonTVPlus'
+          alt='FreeTV'
           width={120}
           height={120}
           className='opacity-50'
@@ -504,7 +504,7 @@ export default function BannerCarousel({
 
   return (
     <div
-      className={`relative w-full ${bannerHeightClassMap[bannerHeightScale]} overflow-hidden group`}
+      className={`freetv-hero relative w-full ${bannerHeightClassMap[bannerHeightScale]} overflow-hidden group`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -581,11 +581,12 @@ export default function BannerCarousel({
       </div>
 
       {/* 内容信息 */}
-      <div className='absolute inset-0 flex items-end p-8 md:p-12 pointer-events-none'>
-        <div className='max-w-2xl space-y-4'>
+      <div className='absolute inset-0 flex items-end p-6 sm:p-8 md:p-12 pointer-events-none'>
+        <div className='freetv-hero-copy max-w-2xl space-y-4'>
+          <div className='freetv-hero-kicker'>FREE TV <span>／</span> AFTER DARK</div>
           <h2
             ref={titleRef}
-            className='text-3xl md:text-5xl font-bold text-white drop-shadow-lg'
+            className='freetv-hero-title text-3xl md:text-5xl font-bold text-white drop-shadow-lg'
             style={
               isMobileView && bannerHeightScale === '1'
                 ? { fontSize: `${mobileTitleFontSize}px` }
@@ -643,7 +644,7 @@ export default function BannerCarousel({
               e.stopPropagation();
               handlePlay(currentItem.title);
             }}
-            className='hidden md:flex items-center gap-2 px-6 py-3 bg-gray-500/30 hover:bg-gray-500/50 backdrop-blur-sm text-white font-semibold rounded-lg transition-all pointer-events-auto'
+            className='freetv-hero-play hidden md:flex items-center gap-2 px-6 py-3 backdrop-blur-sm text-white font-semibold transition-all pointer-events-auto'
           >
             <Play className='w-5 h-5 fill-white' />
             立即播放
@@ -655,6 +656,10 @@ export default function BannerCarousel({
             </p>
           )}
         </div>
+      </div>
+
+      <div className='freetv-hero-index' aria-hidden='true'>
+        <span>FREE TV</span><i /> CINEMA / 01
       </div>
 
       {/* 左右切换按钮 - 只在桌面端显示 */}

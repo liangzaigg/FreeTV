@@ -1020,7 +1020,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
     return (
       <>
         <div
-          className={`group relative w-full rounded-lg bg-transparent transition-all duration-300 ease-in-out ${
+          className={`freetv-video-card group relative w-full rounded-lg bg-transparent transition-all duration-300 ease-in-out ${
             isInvalidFavorite
               ? 'cursor-not-allowed'
               : `hover:scale-[1.05] hover:z-[500] ${isUpcoming ? 'cursor-default' : 'cursor-pointer'}`
@@ -1069,7 +1069,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
         >
           {/* 海报容器：不在外层 overflow-hidden，避免裁切来源数量浮层 */}
           <div
-            className={`relative rounded-lg ${
+            className={`freetv-poster-frame relative rounded-lg ${
               origin === 'live'
                 ? 'ring-1 ring-gray-300/80 dark:ring-gray-600/80'
                 : ''

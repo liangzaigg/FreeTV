@@ -38,7 +38,7 @@ jobs:
           echo "NODE_ENV=production" >> $GITHUB_ENV
           # FreeTV uses Cloudflare D1 so no external database service is needed.
           echo "NEXT_PUBLIC_STORAGE_TYPE=d1" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_SITE_NAME=自由TV" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SITE_NAME=FreeTV" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_SEARCH_MAX_PAGE=${{ secrets.NEXT_PUBLIC_SEARCH_MAX_PAGE }}" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_DOUBAN_PROXY_TYPE=${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY_TYPE }}" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_DOUBAN_PROXY=${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY }}" >> $GITHUB_ENV
@@ -103,7 +103,7 @@ jobs:
 
           # Append all environment variables to wrangler.toml
           append_var "NEXT_PUBLIC_STORAGE_TYPE" "d1"
-          append_var "NEXT_PUBLIC_SITE_NAME" "自由TV"
+          append_var "NEXT_PUBLIC_SITE_NAME" "FreeTV"
           append_var "NEXT_PUBLIC_SEARCH_MAX_PAGE" "${{ secrets.NEXT_PUBLIC_SEARCH_MAX_PAGE }}"
           append_var "NEXT_PUBLIC_DOUBAN_PROXY_TYPE" "${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY_TYPE }}"
           append_var "NEXT_PUBLIC_DOUBAN_PROXY" "${{ secrets.NEXT_PUBLIC_DOUBAN_PROXY }}"

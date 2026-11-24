@@ -376,11 +376,11 @@ export const builtInThemes = {
   cyberpunk: {
     name: '赛博朋克',
     description: '霓虹青紫与深色电影质感',
-    color: '#22d3ee',
+    color: '#ff2e88',
     css: `
 :root:not(.dark) {
-  --theme-primary: #0891b2;
-  --theme-primary-hover: #7c3aed;
+  --theme-primary: #ff2e88;
+  --theme-primary-hover: #22d3ee;
   --theme-bg: #080b16;
   --theme-bg-secondary: #111629;
   --theme-text: #ecf7ff;
@@ -388,8 +388,8 @@ export const builtInThemes = {
   --theme-border: rgba(34, 211, 238, 0.2);
 }
 .dark {
-  --theme-primary: #22d3ee;
-  --theme-primary-hover: #c084fc;
+  --theme-primary: #ff2e88;
+  --theme-primary-hover: #22d3ee;
   --theme-bg: #080b16;
   --theme-bg-secondary: #111629;
   --theme-text: #ecf7ff;
@@ -402,10 +402,86 @@ html, body {
 }
 body {
   background-image:
-    radial-gradient(ellipse at 78% 0%, rgba(112, 46, 190, 0.16), transparent 38%),
-    radial-gradient(ellipse at 8% 18%, rgba(0, 205, 230, 0.09), transparent 32%),
+    radial-gradient(ellipse at 78% 0%, rgba(255, 46, 136, 0.16), transparent 38%),
+    radial-gradient(ellipse at 8% 18%, rgba(0, 205, 230, 0.11), transparent 32%),
     linear-gradient(180deg, #080b16 0%, #0b1020 52%, #080b16 100%) !important;
   background-attachment: fixed !important;
+}
+.freetv-hero {
+  isolation: isolate;
+  background: #070811;
+  border-bottom: 1px solid rgba(34, 211, 238, .35);
+}
+.freetv-hero::after {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-left: 2px solid #ff2e88;
+  pointer-events: none;
+  clip-path: polygon(0 0, 100% 0, 100% 72%, 94% 100%, 0 100%);
+}
+.freetv-hero-kicker {
+  color: #a7f3ff;
+  font: 700 11px/1.2 Inter, 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
+  letter-spacing: .24em;
+  text-shadow: 0 0 18px rgba(34, 211, 238, .7);
+}
+.freetv-hero-kicker span { color: #ff2e88; }
+.freetv-hero-title {
+  max-width: 11ch;
+  line-height: 1.08;
+  letter-spacing: .035em;
+  text-shadow: 0 3px 24px rgba(0, 0, 0, .75), 3px 0 0 rgba(255, 46, 136, .18);
+}
+.freetv-hero-play {
+  background: #ff2e88;
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 92% 100%, 0 100%);
+  box-shadow: 0 0 28px rgba(255, 46, 136, .35);
+}
+.freetv-hero-play:hover { background: #22d3ee; color: #070811; }
+.freetv-hero-index {
+  position: absolute;
+  z-index: 2;
+  right: 38px;
+  top: 42px;
+  color: rgba(255,255,255,.7);
+  font: 600 10px/1 Inter, Arial, sans-serif;
+  letter-spacing: .2em;
+  writing-mode: vertical-rl;
+}
+.freetv-hero-index span { color: #ff2e88; }
+.freetv-hero-index i {
+  display: inline-block;
+  height: 42px;
+  margin: 10px auto;
+  border-left: 1px solid #22d3ee;
+}
+.freetv-video-card { transition: filter .25s ease, transform .25s ease; }
+.freetv-video-card:hover { filter: drop-shadow(0 0 13px rgba(255, 46, 136, .24)); }
+.text-green-600 { color: #ff2e88 !important; text-shadow: 0 0 18px rgba(255, 46, 136, .24); }
+.freetv-poster-frame { isolation: isolate; }
+.freetv-poster-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 1px solid rgba(34, 211, 238, .34);
+  border-bottom: 2px solid rgba(255, 46, 136, .72);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+.freetv-video-card:hover .freetv-poster-frame::after {
+  border-color: rgba(255, 46, 136, .85);
+  box-shadow: inset 0 0 18px rgba(255, 46, 136, .12);
+}
+.freetv-video-card:nth-child(3n) .freetv-poster-frame::after { border-bottom-color: #c7ff3f; }
+.freetv-video-card [class*="group-hover:text-green"] { color: #22d3ee !important; }
+@media (max-width: 639px) {
+  .freetv-hero::after { inset: 9px; }
+  .freetv-hero-index { right: 20px; top: 24px; font-size: 8px; }
 }
 [class*="bg-white"]:not(.dark *), [class*="bg-gray-50"]:not(.dark *) {
   background: rgba(17, 22, 41, 0.94) !important;
@@ -424,8 +500,8 @@ body {
   filter: drop-shadow(0 0 18px rgba(34, 211, 238, .22));
 }
 #nprogress .bar {
-  background: linear-gradient(90deg, #22d3ee, #a855f7) !important;
-  box-shadow: 0 0 12px rgba(34, 211, 238, .75) !important;
+  background: linear-gradient(90deg, #ff2e88, #22d3ee) !important;
+  box-shadow: 0 0 12px rgba(255, 46, 136, .75) !important;
 }
 ::selection { background: rgba(34, 211, 238, .32); color: #fff; }
 @media (prefers-reduced-motion: reduce) {
